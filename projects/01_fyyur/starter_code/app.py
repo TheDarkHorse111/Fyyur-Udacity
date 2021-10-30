@@ -26,6 +26,7 @@ from jinja2.nodes import Not
 from forms import *
 from flask_migrate import Migrate, current, show
 from datetime import datetime
+from models import Venue, Artist, Shows, db
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -34,7 +35,7 @@ from datetime import datetime
 app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
-from models import Venue, Artist, Shows, db
+
 db.init_app(app)
 
 
