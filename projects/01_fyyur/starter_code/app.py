@@ -198,10 +198,7 @@ def create_venue_submission():
     venue.image_link = form.image_link.data
     venue.facebook_link = form.facebook_link.data
     venue.website_link = form.website_link.data
-    if form.seeking_talent.data == 'y':
-      venue.seeking_talent = True
-    else:
-      venue.seeking_talent = False
+    venue.seeking_talent = form.seeking_talent.data
     venue.seeking_description = form.seeking_description.data
     db.session.add(venue)
     db.session.commit()
@@ -412,10 +409,7 @@ def edit_venue_submission(venue_id):
     venue.image_link = form.image_link.data
     venue.facebook_link = form.facebook_link.data
     venue.website_link = form.website_link.data
-    if form.seeking_talent.data == 'y':
-      venue.seeking_talent = True
-    else:
-      venue.seeking_talent = False
+    venue.seeking_talent = form.seeking_talent.data
     venue.seeking_description = form.seeking_description.data
     db.session.commit()
   except:
@@ -460,11 +454,7 @@ def create_artist_submission():
     facebook_link = form.facebook_link.data
     print(request.form['facebook_link'])
     print(request.form['seeking_venue'])
-    if form.seeking_venue.data == 'y':
-      seeking_venue = True
-    else:
-      seeking_venue = False
-    
+    seeking_venue = form.seeking_venue.data
     seeking_description = form.seeking_description.data
     print(request.form['seeking_description'])
     myArtist = Artist(name=name,city=city,state=state,phone=phone,genres=genres,website_link=website_link,
