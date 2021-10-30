@@ -82,53 +82,23 @@ def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
  
-  allVenues = Venue.query.order_by(Venue.id).all()
-  venues = []
-  data = []
-  citiesDic = {}
-    
-  for venue in allVenues:
-    currentCity = venue.city
-    currentState= venue.state
+  locals = []
+  venues = Venue.query.all()
 
-    if venue.state not in citiesDic.keys():
-      citiesDic[venue.state] = []
-    
-  
-    showCount = Shows.query.filter(Shows.Venue_id == venue.id and Shows.Start_time > datetime.today()).count()
-    
-    venue.num_upcoming_shows = showCount
-    
-    
-    
-    if currentCity not in citiesDic[currentState]:
-      for ven in allVenues:
-        if ven.city == currentCity and ven.state == currentState:
-          venues.append({
-          "id":venue.id,
-          "name":venue.name,
-          "num_upcoming_shows": showCount
-        })
-      
-      print(venues)
-    
-      data.append({
-        "city":currentCity,
-        "state":currentState,
-        "venues":[dict(tuple) for tuple in {tuple(sorted(dict.items())) for dict in venues}]
+  places = Venue.query.distinct(Venue.city, Venue.state).all()
+
+  for place in places:
+      locals.append({
+          'city': place.city,
+          'state': place.state,
+          'venues': [{
+              'id': venue.id,
+              'name': venue.name,
+              'num_upcoming_shows': len([show for show in venue.shows if show.Start_time > datetime.now()])
+          } for venue in venues if
+              venue.city == place.city and venue.state == place.state]
       })
-    if currentCity not in citiesDic[currentState]:
-      citiesDic[currentState].append(currentCity)
-    
-  print(citiesDic)  
-    
-  
-
-    
-    
-
-  
-  return render_template('pages/venues.html', areas=data)
+  return render_template('pages/venues.html', areas=locals)
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
@@ -569,7 +539,7 @@ def create_show_submission():
     Start_Time = request.form['start_time']
     show = Shows(Artist_id=artistID, Venue_id = venueID, Start_time = Start_Time)
     show.artist = myArtist
-    myVenue.artists.append(show)
+    myVenue.shows.append(show)
   
     print(request.form['start_time'])
     db.session.add(show)
