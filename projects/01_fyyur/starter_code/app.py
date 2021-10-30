@@ -8,7 +8,15 @@ import re
 import sys
 import dateutil.parser
 import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import(
+  Flask,
+  render_template, 
+  request, 
+  Response, 
+  flash, 
+  redirect, 
+  url_for
+  )
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
@@ -17,7 +25,7 @@ from flask_wtf import FlaskForm
 from jinja2.nodes import Not
 from forms import *
 from flask_migrate import Migrate, current, show
-
+from datetime import datetime
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -149,27 +157,23 @@ def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
   
-  genres = []
+  
+  venue = Venue.query.get_or_404(venue_id)
+
   pastShows = []
   upcomingShows = []
-  venue = Venue.query.get(venue_id)
-  
-  for artistShow in venue.artists:
-    genres.append(artistShow.artist.genres)
-    if artistShow.Start_time <= datetime.today():
-      pastShows.append({
-        "artist_id": artistShow.artist.id,
-        "artist_name": artistShow.artist.name,
-        "artist_image_link": artistShow.artist.image_link,
-        "start_time": str(artistShow.Start_time)
-      })
-    else:
-      upcomingShows.append({
-        "artist_id": artistShow.artist.id,
-        "artist_name": artistShow.artist.name,
-        "artist_image_link": artistShow.artist.image_link,
-        "start_time": str(artistShow.Start_time)
-      })
+
+  for show in venue.shows:
+      temp_show = {
+          'artist_id': show.artist.id,
+          'artist_name': show.artist.name,
+          'artist_image_link': show.artist.image_link,
+          'start_time': show.Start_time.strftime("%m/%d/%Y, %H:%M")
+      }
+      if show.Start_time <= datetime.now():
+          pastShows.append(temp_show)
+      else:
+          upcomingShows.append(temp_show)
 
 
   

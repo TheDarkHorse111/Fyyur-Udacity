@@ -6,11 +6,11 @@ db = SQLAlchemy()
 
 
 class Shows(db.Model):
-    Artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), primary_key=True)
-    Venue_id = db.Column( db.Integer, db.ForeignKey('Venue.id'), primary_key=True)
+    Shows_id = db.Column(db.Integer, primary_key=True)
+    Artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
+    Venue_id = db.Column( db.Integer, db.ForeignKey('Venue.id'))
     Start_time = db.Column(db.DateTime, nullable =False)
-    artist = db.relationship("Artist", backref="venues")
-    venue = db.relationship("Venue", backref="artists")
+    
 
 class Venue(db.Model):
     __tablename__ = 'Venue'
@@ -28,7 +28,7 @@ class Venue(db.Model):
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String())
     num_upcoming_shows = db.Column(db.Integer, default=0)
-    
+    shows = db.relationship('Shows', backref='venue', lazy='joined', cascade="all, delete")
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -46,4 +46,4 @@ class Artist(db.Model):
     website_link = db.Column(db.String(120))
     seeking_venue = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String())
-   
+    shows = db.relationship('Shows', backref='artist', lazy='joined', cascade="all, delete")
