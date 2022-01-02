@@ -15,9 +15,13 @@ class TriviaTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.access_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpsTzkzNXQ0TTVPN3lWdVlaNFhNVyJ9.eyJpc3MiOiJodHRwczovL2Rldi1oMmswMjB1Zi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMGE3MDlmYTJjZDEwMDY5ZWU0ZGViIiwiYXVkIjoiY2FzdGluZ19hZ2VuY3lfYXBpIiwiaWF0IjoxNjQxMDcyODk2LCJleHAiOjE2NDEwODAwOTYsImF6cCI6IkYwQXRzcEFHTGp2QW1sMmI0dXk4eUpqd05ENG5JaTBFIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyJdfQ.IIFm3IS5sm0Hxij1i8-sUSzzT8k7NzmMCPqJ6LYL15d0u7_Or4sLWiyia4iXpxZiY9Sfu5C_JYfkUprF8sJdIPa6XES3PSIYJdmQ9d-vR_58ESdNg-L-Tzy6w7H2zqHZ3yMVQMq4AWVnqIBkz99tRXre1CBxIXn2omvyq5McDGfquseULv6W4g9S4Wxvb5iLR9XhXkk-ncnZBBL5ZSgIaVao2PLk5Dv8_JJmLTZNeIl5tzTg5rUlbpBOwBYTXv9e9M4fXGkrfctfraonOWReZEOcaE-1rB0zBDGRqr9dErFSUEZJoR7QBRusdUQ7DhSRPWHvphgGhFt6rCIFqjS8rA'
+        self.access_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpsTzkzNXQ0TTVPN3lWdVlaNFhNVyJ9.eyJpc3MiOiJodHRwczovL2Rldi1oMmswMjB1Zi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMGE3MDlmYTJjZDEwMDY5ZWU0ZGViIiwiYXVkIjoiY2FzdGluZ19hZ2VuY3lfYXBpIiwiaWF0IjoxNjQxMTY0NjYwLCJleHAiOjE2NDExNzE4NjAsImF6cCI6IkYwQXRzcEFHTGp2QW1sMmI0dXk4eUpqd05ENG5JaTBFIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZGVsZXRlOm1vdmllcyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiLCJwb3N0Om1vdmllcyJdfQ.CNKE7k_QMwZzfyMoBRlMhLDt1vW7hZmwhUbU5YmENPuv9TsblJiXdUhiJe7wczCQ8yOY1YbSQLmxduWv5OjKAq9yjmsTiF6Lc6uGTol1m2tk6nKO_29aiEEhYjChFpDb9UAHuwbeEUp2aU1ntLxUnlEsVH6iSI1DFLvKP6kxVGGTqfkct81HGv1dV_NaE2rncjXmn8D5RcvQ_nJngvc8Oa6Awo9r56Bak20d8qEsCKOZxhSN68KB90wl1x3__w3lHSxE8gtitYtABFtE9DRHI2q-51CZCH106uLx5g5s0q1sTHoqeg64rWRDFH3u783CHbqKspiviDNo4OjxNc1WOA'
+        self.test_token ='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpsTzkzNXQ0TTVPN3lWdVlaNFhNVyJ9.eyJpc3MiOiJodHRwczovL2Rldi1oMmswMjB1Zi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMjAzZTQxZTEzZGQwMDY4YzYwOGVhIiwiYXVkIjoiY2FzdGluZ19hZ2VuY3lfYXBpIiwiaWF0IjoxNjQxMTY0NTUwLCJleHAiOjE2NDExNzE3NTAsImF6cCI6IkYwQXRzcEFHTGp2QW1sMmI0dXk4eUpqd05ENG5JaTBFIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyJdfQ.UR6i5dW428Gi_kxgoBK-pvsw_OnTO4-euTZ8D3REh9mHNuNVD4jILLlFjtGgotPNLcbaYYMGD5Kb38dlF8HMN-I600FN8rmmiRecOyQ9WauSuaS0fRfOkSlAJhphKCUPhidthCnudyW1p_Sj3C2uwZDUf-TGFlWgRrgtRvDXW_ZaCF24k2pMhiGLOq0ktqJxMozodZXxg5ZQuv06mxmT9IPyEJgT9D40hTVanyhG8GhRW1uc6VWtezecHt_QVqq7yIJwR_KUhnC68Ye5U82PMVhxf-7FO2o-uP6lkIsETjYr8NVVDa90Lm0a1jQnoYzZYNfX5Xnav3DYu3qOd_8ffA'
         self.headers = {
         'Authorization': 'Bearer {}'.format(self.access_token)
+        }
+        self.test_headers = {
+        'Authorization': 'Bearer {}'.format(self.test_token)
         }
         DB_HOST = os.getenv('DB_HOST', '127.0.0.1:5432')
         DB_USER = os.getenv('DB_USER', 'postgres')
@@ -54,7 +58,7 @@ class TriviaTestCase(unittest.TestCase):
 
 
     def test_get_paginated_movies(self):
-        res = self.client().get('/movies')
+        res = self.client().get('/movies', headers=self.headers)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -188,17 +192,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "method not allowed")
 
 
-    def test_401_unauthorized_without_required_permission(self):
-        res = self.client().delete("/movies/1", headers=self.headers)
+    def test_403_unauthorized_delete_movie_without_required_permission(self):
+        res = self.client().delete("/movies/1", headers=self.test_headers)
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 401)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "unauthorized")
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data["code"], 'unauthorized')
+        self.assertEqual(data["description"], "Permission not found.")
 
-        
+    def test_403_unauthorized_post_movie_without_required_permission(self):
+        res = self.client().post("/movies", headers=self.test_headers, json=self.new_movie)
+        data = json.loads(res.data)
 
-    
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data["code"], 'unauthorized')
+        self.assertEqual(data["description"], "Permission not found.")
+
+       
     
     
 

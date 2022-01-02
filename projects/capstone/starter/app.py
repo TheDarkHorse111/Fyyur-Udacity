@@ -128,10 +128,13 @@ def create_app(test_config=None):
   @app.route('/actors/<int:id>', methods=['DELETE'])
   @requires_auth('delete:actors')
   def delete_actor(jwt,id):
-    try:
-      actor = Actor.query.filter(Actor.id == id).one_or_none()
-      if actor is None:
-        abort(404)
+    
+    actor = Actor.query.filter(Actor.id == id).one_or_none()
+    
+    if actor is None:
+      abort(404)
+
+    try:  
       actor.delete()
       return jsonify({
         'success':True,
@@ -143,11 +146,13 @@ def create_app(test_config=None):
   @app.route('/movies/<int:id>', methods=['DELETE'])
   @requires_auth('delete:movies')
   def delete_movie(jwt,id):
-    try:
-      movie = Movie.query.filter(Movie.id == id).one_or_none()
-      if movie is None:
-        abort(404)
+    
+    movie = Movie.query.filter(Movie.id == id).one_or_none()
       
+    if movie is None:
+      abort(404)
+
+    try:  
       movie.delete()
       return jsonify({
         'success':True,
@@ -252,6 +257,12 @@ def create_app(test_config=None):
       return (
           jsonify({"success": False, "error": 401, "message": "unauthorized"}),
           401,
+      )
+  @app.errorhandler(403)
+  def token_error(error):
+      return (
+          jsonify({"success": False, "error": 403, "message": "forbidden"}),
+          403,
       )
 
   @app.errorhandler(AuthError)
