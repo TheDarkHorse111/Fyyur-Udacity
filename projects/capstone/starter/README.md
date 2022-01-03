@@ -187,3 +187,6 @@ DELETE /movies/15
     'success': True,
     'deleted': 15
 }
+
+
+https://dev-h2k020uf.us.auth0.com/authorize?audience=casting_agency_api&response_type=token&client_id=F0AtspAGLjvAml2b4uy8yJjwND4nIi0E&redirect_uri=http://127.0.0.1:5000/ 
