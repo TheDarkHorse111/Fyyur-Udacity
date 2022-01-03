@@ -6,6 +6,7 @@ from auth.auth import AuthError, requires_auth
 
 NUM_PER_PAGE = 10
 
+#paginates models to show up to 10 objects per page
 def paginate_selections(request, selection):
     page = request.args.get("page", 1, type=int)
     start = (page - 1) * NUM_PER_PAGE
@@ -24,14 +25,16 @@ def paginate_selections(request, selection):
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
+  # setup the database and create tables
   setup_db(app)
   CORS(app)
 
+  #root route to make sure the app works
   @app.route('/')
   def index():
     return "it works i guess"
 
-
+  #get all the actors and paginate results up to 10 results per page
   @app.route('/actors')
   @requires_auth('get:actors')
   def get_actors(jwt):
@@ -40,7 +43,7 @@ def create_app(test_config=None):
     
     if len(current_actors) == 0:
       abort(404)
-    
+
     return jsonify(
       {
         "current_actors": current_actors,
@@ -49,8 +52,8 @@ def create_app(test_config=None):
       }
     )
 
-    
-
+  
+  #get all movies and paginate results up to 10 results per page
   @app.route('/movies')
   @requires_auth('get:movies')
   def get_movies(jwt):
@@ -69,7 +72,7 @@ def create_app(test_config=None):
     )
  
 
-
+  #add an actor to the database 
   @app.route('/actors', methods=['POST'])
   @requires_auth('post:actors')
   def add_actor(jwt):
@@ -97,7 +100,7 @@ def create_app(test_config=None):
     except:
       abort(422)   
 
-
+  #add a movie to the database
   @app.route('/movies', methods=['POST'])
   @requires_auth('post:movies')
   def add_movie(jwt):
@@ -124,7 +127,7 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-  
+  #delete an actor from the database 
   @app.route('/actors/<int:id>', methods=['DELETE'])
   @requires_auth('delete:actors')
   def delete_actor(jwt,id):
@@ -143,6 +146,7 @@ def create_app(test_config=None):
     except:
       abort(422)
 
+  #delete a movie from the database
   @app.route('/movies/<int:id>', methods=['DELETE'])
   @requires_auth('delete:movies')
   def delete_movie(jwt,id):
@@ -161,7 +165,7 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-
+  #update a whole actor or some of his values
   @app.route('/actors/<int:id>', methods=['PATCH'])
   @requires_auth('patch:actors')
   def update_actor(jwt,id):
@@ -191,6 +195,7 @@ def create_app(test_config=None):
     except:
       abort(422)
 
+  #update a whole movie or some of it's values
   @app.route('/movies/<int:id>', methods=['PATCH'])
   @requires_auth('patch:movies')
   def update_movie(jwt,id):
@@ -216,7 +221,7 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-
+  # this section is for handling the various possible errors when calling the methods above 
   @app.errorhandler(404)
   def not_found(error):
       return (
@@ -264,7 +269,7 @@ def create_app(test_config=None):
           jsonify({"success": False, "error": 403, "message": "forbidden"}),
           403,
       )
-
+  # an error handler for various authentication and authorization errors 
   @app.errorhandler(AuthError)
   def handle_auth_error(ex):
     response = jsonify(ex.error)

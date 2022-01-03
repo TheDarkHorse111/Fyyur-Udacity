@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import json
@@ -27,10 +27,7 @@ def setup_db(app, database_path=database_path):
     migrate = Migrate(app, db)
     db.create_all()
 
-'''
-Question
 
-'''
 class Movie(db.Model):  
   __tablename__ = 'movies'
 

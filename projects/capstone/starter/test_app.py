@@ -8,11 +8,9 @@ from database_models.models import setup_db, Actor, Movie
 
 
 
-class TriviaTestCase(unittest.TestCase):
-    """This class represents the trivia test case"""
+class CastingAgencyTestCase(unittest.TestCase):
 
     def setUp(self):
-        """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
         self.access_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpsTzkzNXQ0TTVPN3lWdVlaNFhNVyJ9.eyJpc3MiOiJodHRwczovL2Rldi1oMmswMjB1Zi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMGE3MDlmYTJjZDEwMDY5ZWU0ZGViIiwiYXVkIjoiY2FzdGluZ19hZ2VuY3lfYXBpIiwiaWF0IjoxNjQxMTY0NjYwLCJleHAiOjE2NDExNzE4NjAsImF6cCI6IkYwQXRzcEFHTGp2QW1sMmI0dXk4eUpqd05ENG5JaTBFIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZGVsZXRlOm1vdmllcyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiLCJwb3N0Om1vdmllcyJdfQ.CNKE7k_QMwZzfyMoBRlMhLDt1vW7hZmwhUbU5YmENPuv9TsblJiXdUhiJe7wczCQ8yOY1YbSQLmxduWv5OjKAq9yjmsTiF6Lc6uGTol1m2tk6nKO_29aiEEhYjChFpDb9UAHuwbeEUp2aU1ntLxUnlEsVH6iSI1DFLvKP6kxVGGTqfkct81HGv1dV_NaE2rncjXmn8D5RcvQ_nJngvc8Oa6Awo9r56Bak20d8qEsCKOZxhSN68KB90wl1x3__w3lHSxE8gtitYtABFtE9DRHI2q-51CZCH106uLx5g5s0q1sTHoqeg64rWRDFH3u783CHbqKspiviDNo4OjxNc1WOA'
@@ -43,10 +41,7 @@ class TriviaTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-    """
-    TODO
-    Write at least one test for each test for successful operation and for expected errors.
-    """
+
     def test_get_paginated_actors(self):
         res = self.client().get('/actors', headers=self.headers)
         data = json.loads(res.data)
@@ -202,6 +197,22 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_403_unauthorized_post_movie_without_required_permission(self):
         res = self.client().post("/movies", headers=self.test_headers, json=self.new_movie)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data["code"], 'unauthorized')
+        self.assertEqual(data["description"], "Permission not found.")
+
+    def test_403_unauthorized_delete_actor_without_required_permission(self):
+        res = self.client().delete("/actors/1", headers=self.test_headers)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data["code"], 'unauthorized')
+        self.assertEqual(data["description"], "Permission not found.")
+
+    def test_403_unauthorized_post_actor_without_required_permission(self):
+        res = self.client().post("/actors", headers=self.test_headers, json=self.new_actor)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
