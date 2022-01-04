@@ -1,12 +1,12 @@
-import json
+import os, json
 from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'dev-h2k020uf.us.auth0.com'
-ALGORITHMS = ['RS256']
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get('ALGORITHMS')
 API_AUDIENCE = 'casting_agency_api'
 
 ## AuthError Exception
@@ -21,8 +21,6 @@ class AuthError(Exception):
 
 
 ## Auth Header
-
-
 def get_token_auth_header():
     auth = request.headers.get('Authorization', None)
     if not auth:
@@ -69,9 +67,7 @@ def check_permissions(permission, payload):
         }, 403)
     return True
 
-'''
-     !!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
-'''
+
 def verify_decode_jwt(token):
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())

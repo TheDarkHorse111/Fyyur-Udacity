@@ -22,6 +22,13 @@ This will install all of the required packages selected within the `requirements
 
 - [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py.
 
+5. **Enviornment variables**
+before running the flask app, you need to setup the enviornment variables by running the setup.sh script in the project starter directory using the following commands:
+
+- chmod +x setup.sh
+- source setup.sh
+
+
 ### Database Setup
 With Postgres running, run the following commands with a database user of your choice:
 
@@ -43,6 +50,31 @@ The `--reload` flag will detect file changes and restart the server automaticall
 
 •	These commands put the application in development and directs our application to use the app.py file in our starter folder. Working in development mode shows an interactive debugger in the console and restarts the server whenever changes are made. If you are running locally on Windows, look for the commands in the Flask documentation.
 •	The application is run on http://127.0.0.1:5000/ by default 
+
+### Authentication and Authorization
+
+to access the endpoints you need to have a `Bearer` Token, to get a token, copy the url below in an incognito tab in the browser and press enter
+
+https://dev-h2k020uf.us.auth0.com/authorize?audience=casting_agency_api&response_type=token&client_id=F0AtspAGLjvAml2b4uy8yJjwND4nIi0E&redirect_uri=http://127.0.0.1:5000/
+
+in the auth0 sign in page you can use 1 of three test accounts with the diffrent roles
+1) email: test1@testmail.com
+   password: test123456.
+   Role: Executive Producer
+
+1) email: test2@testmail.com
+   password: test123456.
+   Role: Casting Director
+
+1) email: test4@testmail.com
+   password: test123456.
+   Role: Casting Assistant
+
+copy the token and hit the endpoint in postman or using curl, its also important to note that you need these tokens in test_app.py for the tests to work correctly
+
+### deployment
+the app is deployed using heroku at the current URL: 
+
 
 ## Endpoints
 GET /actors and /movies
@@ -188,5 +220,3 @@ DELETE /movies/15
     'deleted': 15
 }
 
-
-https://dev-h2k020uf.us.auth0.com/authorize?audience=casting_agency_api&response_type=token&client_id=F0AtspAGLjvAml2b4uy8yJjwND4nIi0E&redirect_uri=http://127.0.0.1:5000/ 
